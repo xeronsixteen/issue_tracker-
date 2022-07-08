@@ -1,0 +1,12 @@
+{% extends 'base.html'     %}
+
+{% block content %}
+
+<h1 >Create post</h1>
+<form action="{% url 'create' %}" method="post">
+    {% include "partial/form.html" with button_text="Create" %}
+</form>
+<br/>
+<a href="{% url 'index'%}">Main page</a>
+
+{% endblock %}
