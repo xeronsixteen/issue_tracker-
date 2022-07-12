@@ -21,7 +21,8 @@ class TaskView(TemplateView):
     template_name = "task_view.html"
 
     def get_context_data(self, **kwargs):
-        task = Task.objects.order_by('description')
+        pk = kwargs.get('pk')
+        task = get_object_or_404(Task, pk=pk)
         kwargs["task"] = task
         return super().get_context_data(**kwargs)
 
