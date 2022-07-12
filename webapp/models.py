@@ -8,13 +8,18 @@ class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="date of creation")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="date of update")
 
+    class Meta:
+        abstract = True
+
 
 class Task(BaseModel):
     summary = models.CharField(max_length=100, verbose_name='summary')
     description = models.TextField(max_length=2000, null=False, blank=True, verbose_name='description')
     status = models.ForeignKey('webapp.Status', on_delete=models.PROTECT, related_name='tasks',
                                verbose_name='status')
-    type = models.ForeignKey('webapp.Type', on_delete=models.PROTECT, related_name='tasks', verbose_name='type')
+
+    type = models.ManyToManyField('webapp.Type', related_name='tasks', through='TaskType',
+                                  through_fields=('task', 'type'), blank=False)
 
     def __str__(self):
         return f"{self.id}. {self.summary}: {self.description}"
@@ -25,9 +30,20 @@ class Task(BaseModel):
         verbose_name_plural = "Tasks"
 
 
-class Type(models.Model):
-    name = models.CharField(max_length=50, null=False, blank=False,
-                            verbose_name='type')
+class Status(models.Model):
+    name = models.CharField(max_length=50, null=False, blank=False, verbose_name='status')
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        db_table = "statuses"
+        verbose_name = "Status"
+        verbose_name_plural = "Statuses"
+
+
+class Type(BaseModel):
+    name = models.CharField(max_length=50, null=False, blank=False, verbose_name='type')
 
     def __str__(self):
         return f"{self.name}"
@@ -38,14 +54,13 @@ class Type(models.Model):
         verbose_name_plural = "Types"
 
 
-class Status(models.Model):
-    name = models.CharField(max_length=50, null=False, blank=False,
-                            verbose_name='status')
+class TaskType(models.Model):
+    task = models.ForeignKey('webapp.Task',
+                             related_name='task_types',
+                             on_delete=models.CASCADE,
+                             verbose_name='Task')
 
-    def __str__(self):
-        return f"{self.name}"
-
-    class Meta:
-        db_table = "statuses"
-        verbose_name = "Status"
-        verbose_name_plural = "Statuses"
+    type = models.ForeignKey('webapp.Type',
+                             related_name='type_tasks',
+                             on_delete=models.CASCADE,
+                             verbose_name='Type')
