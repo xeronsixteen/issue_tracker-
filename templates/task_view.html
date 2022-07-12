@@ -16,7 +16,11 @@
             Task status: {{ task.status }}
         </p>
         <p>
-            Task type: {{ task.type }}
+           {% for type in task.types.all %}
+            <p>
+             Task type: {{ task.type }}
+            </p>
+        {% endfor %}
         </p>
 <a href="/">To main page</a>
 {% endblock %}
