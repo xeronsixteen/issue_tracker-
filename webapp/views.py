@@ -28,18 +28,21 @@ class TaskView(TemplateView):
 
 
 class CreateView(View):
-    def get(self, request, *args, **kwargs):
+    @staticmethod
+    def get(request, *args, **kwargs):
         form = TaskForm
         return render(request, "create.html", {'form': form})
 
-    def post(self, request, *args, **kwargs):
+    @staticmethod
+    def post(request, *args, **kwargs):
         form = TaskForm(data=request.POST)
         if form.is_valid():
             summary = form.cleaned_data.get('summary')
             description = form.cleaned_data.get('description')
             status = form.cleaned_data.get('status')
             type = form.cleaned_data.get('type')
-            new_task = Task.objects.create(summary=summary, description=description, status=status, type=type)
+            new_task = Task.objects.create(summary=summary, description=description, status=status)
+            new_task.type.set(type)
             return redirect('index')
         return render(request, 'create.html', {'form': form})
 
@@ -55,7 +58,7 @@ class UpdateView(View):
             'summary': self.task.summary,
             'description': self.task.description,
             'status': self.task.status,
-            'type': self.task.type
+            'type': self.task.type.all()
         })
         return render(request, "update.html", {'form': form})
 
@@ -65,7 +68,7 @@ class UpdateView(View):
             self.task.summary = form.cleaned_data.get('summary')
             self.task.description = form.cleaned_data.get('description')
             self.task.status = form.cleaned_data.get('status')
-            self.task.type = form.cleaned_data.get('type')
+            self.task.type.set(form.cleaned_data.get('type'))
             self.task.save()
             return redirect('index')
         return redirect('index', {'form': form})
