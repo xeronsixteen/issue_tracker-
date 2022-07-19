@@ -16,9 +16,9 @@
             Task status: {{ task.status }}
         </p>
         <p>
-           {% for type in task.types.all %}
+           {% for type in task.type.all %}
             <p>
-             Task type: {{ task.type }}
+             Task type: {{ type.name }}
             </p>
         {% endfor %}
         </p>
