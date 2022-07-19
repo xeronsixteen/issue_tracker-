@@ -42,7 +42,7 @@ class Status(models.Model):
         verbose_name_plural = "Statuses"
 
 
-class Type(BaseModel):
+class Type(models.Model):
     name = models.CharField(max_length=50, null=False, blank=False, verbose_name='type')
 
     def __str__(self):
