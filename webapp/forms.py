@@ -22,8 +22,8 @@ class TaskForm(forms.ModelForm):
             raise ValidationError('Please, enter more than 4 symbols')
         if Task.objects.filter(summary=summary).exists():
             raise ValidationError('A task with that name exists')
-        if not re.match('ˆ[a-zA-Zа-яА-Я\s]+$', summary):
-            raise ValidationError ('Please, enter only letters')
+        # if not re.match('ˆ[a-zA-Zа-яА-Я\s]+$', summary):
+        #     raise ValidationError ('Please, enter only letters')
         return summary
 
     def clean_description(self):
