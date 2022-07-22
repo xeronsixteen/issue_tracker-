@@ -1,20 +1,51 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views import View
-from django.views.generic import TemplateView
+from urllib import request
 
-from webapp.forms import TaskForm
+
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.http import urlencode
+from django.views import View
+from django.views.generic import TemplateView, ListView
+
+from webapp.forms import TaskForm, SearchForm
 from webapp.models import Task
 
 
 # Create your views here.
 
-class IndexView(TemplateView):
-    template_name = "index.html"
+class IndexView(ListView):
+    template_name = 'index.html'
+    model = Task
+    context_object_name = 'tasks'
+    ordering = 'updated_at'
+    paginate_by = 5
 
-    def get_context_data(self, **kwargs):
-        tasks = Task.objects.order_by('created_at')
-        kwargs["tasks"] = tasks
-        return super().get_context_data(**kwargs)
+    def get(self, *args, **kwargs):
+        self.form = self.get_search_form()
+        self.get_search_value = self.get_search_value()
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        if self.get_search_value:
+            return Task.objects.filter(Q(summary__icontains=self.get_search_value) | Q(
+                description__icontains=self.get_search_value))
+        return Task.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['form'] = self.form
+        if self.get_search_value:
+            query = urlencode({'search': self.get_search_value})
+            context['query'] = query
+            context['search'] = self.get_search_value
+        return context
+
+    def get_search_form(self):
+        return SearchForm(self.request.GET)
+
+    def get_search_value(self):
+        if self.form.is_valid():
+            return self.form.cleaned_data.get("search")
 
 
 class TaskView(TemplateView):
