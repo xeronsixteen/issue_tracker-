@@ -38,3 +38,7 @@ class TaskForm(forms.ModelForm):
         if self.cleaned_data.get('summary') == self.cleaned_data.get('description'):
             raise ValidationError('Summary and description could not be the same')
         return super().clean()
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=50, required=False, label='Find')
