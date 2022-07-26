@@ -58,7 +58,7 @@ class TaskView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
-class CreateView(View):
+class CustomCreateView(View):
     @staticmethod
     def get(request, *args, **kwargs):
         form = TaskForm
@@ -72,9 +72,10 @@ class CreateView(View):
             description = form.cleaned_data.get('description')
             status = form.cleaned_data.get('status')
             type = form.cleaned_data.get('type')
-            new_task = Task.objects.create(summary=summary, description=description, status=status)
+            project = form.cleaned_data.get('project')
+            new_task = Task.objects.create(summary=summary, description=description, status=status, project=project)
             new_task.type.set(type)
-            return redirect('index')
+            return redirect('task_list')
         return render(request, 'tasks/create.html', {'form': form})
 
 
@@ -101,8 +102,8 @@ class UpdateView(View):
             self.task.status = form.cleaned_data.get('status')
             self.task.type.set(form.cleaned_data.get('type'))
             self.task.save()
-            return redirect('index')
-        return redirect('index', {'form': form})
+            return redirect('task_list')
+        return redirect('task_list', {'form': form})
 
 
 class DeleteView(View):
@@ -116,4 +117,4 @@ class DeleteView(View):
 
     def post(self, request, *args, **kwargs):
         self.task.delete()
-        return redirect('index')
+        return redirect('task_list')
