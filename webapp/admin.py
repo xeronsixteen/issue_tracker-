@@ -5,15 +5,16 @@ from webapp.models import Task, Type, Status, TaskType, Project
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ['project name', 'id', 'summary', 'description', 'status', 'created_at', 'type']
+    list_display = ['project', 'id', 'summary', 'description', 'status', 'created_at']
     list_display_links = ['summary']
-    list_filter = ['status', 'project name']
-    search_fields = ['summary', 'status', 'project name']
-    fields = ['summary', 'description', 'status', 'type']
+    list_filter = ['status']
+    search_fields = ['summary', 'status']
+    fields = ['summary', 'description', 'status']
     readonly_fields = ['created_at', 'updated_at']
+    filter_horizontal = ['type']
 
 
-admin.site.register(Task)
+admin.site.register(Task, TaskAdmin)
 admin.site.register(Type)
 admin.site.register(Status)
 admin.site.register(TaskType)
