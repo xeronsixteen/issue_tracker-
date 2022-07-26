@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='tasktype',
             name='task',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='task_types', to='webapp.task', verbose_name='Task'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='task_types', to='webapp.task', verbose_name='tasks'),
         ),
         migrations.AlterField(
             model_name='tasktype',

@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Task',
+            name='tasks',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='date of creation')),
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('status', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='tasks', to='webapp.status', verbose_name='status')),
             ],
             options={
-                'verbose_name': 'Task',
+                'verbose_name': 'tasks',
                 'verbose_name_plural': 'Tasks',
                 'db_table': 'tasks',
             },
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
             name='TaskType',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='task_types', to='webapp.task', verbose_name='Task')),
+                ('task', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='task_types', to='webapp.task', verbose_name='tasks')),
                 ('type', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='type_tasks', to='webapp.type', verbose_name='Type')),
             ],
         ),

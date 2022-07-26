@@ -8,7 +8,7 @@ Task.objects.filter(created_at__gte=datetime.now()-timedelta(days=30)).filter(st
 
 #second_task
 q1 = Q(status__name__in=('New', 'In Progress'))
-q2 = Q(type__name__in=('Bug', 'Task'))
+q2 = Q(type__name__in=('Bug', 'tasks'))
 Task.objects.filter(q1 & q2)
 
 #third_task

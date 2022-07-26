@@ -17,16 +17,17 @@ class Task(BaseModel):
     description = models.TextField(null=False, blank=True, verbose_name='description')
     status = models.ForeignKey('webapp.Status', on_delete=models.PROTECT, related_name='tasks',
                                verbose_name='status')
-
     type = models.ManyToManyField('webapp.Type', related_name='tasks', through='TaskType',
                                   through_fields=('task', 'type'), blank=False)
+    project = models.ForeignKey('webapp.Project', on_delete=models.CASCADE, related_name='projects',
+                                verbose_name='project')
 
     def __str__(self):
         return f"{self.id}. {self.summary}: {self.description}"
 
     class Meta:
         db_table = "tasks"
-        verbose_name = "Task"
+        verbose_name = "tasks"
         verbose_name_plural = "Tasks"
 
 
@@ -58,9 +59,16 @@ class TaskType(models.Model):
     task = models.ForeignKey('webapp.Task',
                              related_name='task_types',
                              on_delete=models.CASCADE,
-                             verbose_name='Task')
+                             verbose_name='tasks')
 
     type = models.ForeignKey('webapp.Type',
                              related_name='type_tasks',
                              on_delete=models.CASCADE,
                              verbose_name='Type')
+
+
+class Project(models.Model):
+    created_at = models.DateField(verbose_name="date of creation")
+    finished_at = models.DateField(blank=True, verbose_name="date of finishing")
+    name = models.CharField(max_length=50, null=False, blank=False, verbose_name='project name')
+    description = models.TextField(null=False, blank=True, verbose_name='project description')

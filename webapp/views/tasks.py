@@ -14,7 +14,7 @@ from webapp.models import Task
 # Create your views here.
 
 class IndexView(ListView):
-    template_name = 'index.html'
+    template_name = 'tasks/index.html'
     model = Task
     context_object_name = 'tasks'
     ordering = 'updated_at'
@@ -49,7 +49,7 @@ class IndexView(ListView):
 
 
 class TaskView(TemplateView):
-    template_name = "task_view.html"
+    template_name = "tasks/task_view.html"
 
     def get_context_data(self, **kwargs):
         pk = kwargs.get('pk')
@@ -62,7 +62,7 @@ class CreateView(View):
     @staticmethod
     def get(request, *args, **kwargs):
         form = TaskForm
-        return render(request, "create.html", {'form': form})
+        return render(request, "tasks/create.html", {'form': form})
 
     @staticmethod
     def post(request, *args, **kwargs):
@@ -75,7 +75,7 @@ class CreateView(View):
             new_task = Task.objects.create(summary=summary, description=description, status=status)
             new_task.type.set(type)
             return redirect('index')
-        return render(request, 'create.html', {'form': form})
+        return render(request, 'tasks/create.html', {'form': form})
 
 
 class UpdateView(View):
@@ -91,7 +91,7 @@ class UpdateView(View):
             'status': self.task.status,
             'type': self.task.type.all()
         })
-        return render(request, "update.html", {'form': form})
+        return render(request, "tasks/update.html", {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = TaskForm(data=request.POST)
@@ -112,7 +112,7 @@ class DeleteView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return render(request, "delete.html", {"task": self.task})
+        return render(request, "tasks/delete.html", {"task": self.task})
 
     def post(self, request, *args, **kwargs):
         self.task.delete()
