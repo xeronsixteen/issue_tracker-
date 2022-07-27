@@ -1,7 +1,8 @@
-from webapp.models import Task, Type, Status
 from datetime import datetime, timedelta
-from django.db.models import Q, F
 
+from django.db.models import Q
+
+from webapp.models import Task
 
 #first task
 Task.objects.filter(created_at__gte=datetime.now()-timedelta(days=30)).filter(status__name__istartswith='Done')

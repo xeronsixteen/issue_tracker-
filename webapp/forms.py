@@ -1,4 +1,3 @@
-import re
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import widgets
@@ -48,4 +47,9 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = '__all__'
+        widgets = {
+            'created_at': widgets.SelectDateWidget,
+            'finished_at': widgets.SelectDateWidget,
+        }
+
 

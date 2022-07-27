@@ -1,5 +1,4 @@
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView
 
 from webapp.forms import ProjectForm
@@ -34,3 +33,5 @@ class CreateProject(CreateView):
         project.save()
         form.save_m2m()
         return redirect('project_view', pk=project.pk)
+
+
