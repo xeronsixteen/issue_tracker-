@@ -5,10 +5,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView, ListView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView
 
-from webapp.forms import TaskForm, SearchForm
-from webapp.models import Task
+from webapp.forms import TaskForm, SearchForm, TaskForm2
+from webapp.models import Task, Project
 
 
 # Create your views here.
@@ -58,6 +58,24 @@ class TaskView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
+class TaskCreateInProjectView(CreateView):
+    form_class = TaskForm2
+    template_name = "tasks/createinproject.html"
+
+    # model = Task
+
+    def get_success_url(self):
+        return reverse("task_view", kwargs={"pk": self.object.pk})
+
+    def form_valid(self, form):
+        project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
+        task = form.save(commit=False)
+        task.project = project
+        task.save()
+        form.save_m2m()
+        return redirect('project_view', pk=project.pk)
+
+
 class TaskCreateView(View):
     @staticmethod
     def get(request, *args, **kwargs):
@@ -78,6 +96,17 @@ class TaskCreateView(View):
             return redirect('task_list')
         return render(request, 'tasks/create.html', {'form': form})
 
+    # def form_valid(self, form):
+    #     project = get_object_or_404(Project, pk={self.kwargs.get('pk')})
+    #     task = form.save(commit=False)
+    #     task.project = project
+    #     task.save()
+    #     form.save_m2m()
+    #     return redirect('project_view', pk=project.pk)
+
+    # def get_success_url(self):
+    #     return reverse('task_view', kwargs={'pk': self.object.project.pk})
+
 
 class TaskUpdateView(UpdateView):
     form_class = TaskForm
@@ -92,9 +121,3 @@ class TaskDeleteView(DeleteView):
     model = Task
     template_name = 'tasks/delete.html'
     success_url = reverse_lazy('task_list')
-
-
-
-
-
-

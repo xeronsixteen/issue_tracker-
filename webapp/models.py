@@ -70,6 +70,6 @@ class TaskType(models.Model):
 
 class Project(models.Model):
     created_at = models.DateField(blank=True, verbose_name="date of creation", default=timezone.now())
-    finished_at = models.DateField(blank=True, verbose_name="date of finishing")
+    finished_at = models.DateField(blank=True, null=True, verbose_name="date of finishing")
     name = models.CharField(max_length=50, null=False, blank=False, verbose_name='project name')
-    description = models.TextField(null=False, blank=True, verbose_name='project description')
+    description = models.TextField(null=True, blank=True, verbose_name='project description')

@@ -28,12 +28,8 @@ class CreateProject(CreateView):
     form_class = ProjectForm
     template_name = "projects/create.html"
 
-    def form_valid(self, form):
-        # project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
-        project = form.save(commit=False)
-        project.save()
-        form.save_m2m()
-        return redirect('project_view', pk=project.pk)
+    def get_success_url(self):
+        return reverse('project_view', kwargs={"pk": self.object.pk})
 
 
 class UpdateProject(UpdateView):
