@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from webapp.forms import ProjectForm
 from webapp.models import Project
@@ -42,4 +42,14 @@ class UpdateProject(UpdateView):
     model = Project
 
     def get_success_url(self):
-        return reverse('project_view', kwargs={'pk': self.object.project.pk})
+        return reverse('project_list')
+
+
+class DeleteProject(DeleteView):
+    model = Project
+
+    def get(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('project_list')

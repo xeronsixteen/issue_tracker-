@@ -2,10 +2,10 @@ from urllib import request
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView, ListView, UpdateView
+from django.views.generic import TemplateView, ListView, UpdateView, DeleteView
 
 from webapp.forms import TaskForm, SearchForm
 from webapp.models import Task
@@ -88,15 +88,9 @@ class UpdateView(UpdateView):
         return reverse('task_view', kwargs={'pk': self.object.pk})
 
 
-class DeleteView(View):
-    def dispatch(self, request, *args, **kwargs):
-        pk = kwargs.get('pk')
-        self.task = get_object_or_404(Task, pk=pk)
-        return super().dispatch(request, *args, **kwargs)
+class DeleteView(DeleteView):
+    model = Task
+    template_name = 'tasks/delete.html'
+    success_url = reverse_lazy('task_list')
 
-    def get(self, request, *args, **kwargs):
-        return render(request, "tasks/delete.html", {"task": self.task})
 
-    def post(self, request, *args, **kwargs):
-        self.task.delete()
-        return redirect('task_list')
