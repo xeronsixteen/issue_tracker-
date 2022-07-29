@@ -58,7 +58,7 @@ class TaskView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
-class CustomCreateView(View):
+class TaskCreateView(View):
     @staticmethod
     def get(request, *args, **kwargs):
         form = TaskForm
@@ -79,7 +79,7 @@ class CustomCreateView(View):
         return render(request, 'tasks/create.html', {'form': form})
 
 
-class UpdateView(UpdateView):
+class TaskUpdateView(UpdateView):
     form_class = TaskForm
     template_name = 'tasks/update.html'
     model = Task
@@ -88,9 +88,13 @@ class UpdateView(UpdateView):
         return reverse('task_view', kwargs={'pk': self.object.pk})
 
 
-class DeleteView(DeleteView):
+class TaskDeleteView(DeleteView):
     model = Task
     template_name = 'tasks/delete.html'
     success_url = reverse_lazy('task_list')
+
+
+
+
 
 
