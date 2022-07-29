@@ -1,8 +1,8 @@
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
-from django.utils import timezone
 
 
 class BaseModel(models.Model):
@@ -69,7 +69,7 @@ class TaskType(models.Model):
 
 
 class Project(models.Model):
-    created_at = models.DateField(blank=True, verbose_name="date of creation", default=timezone.now())
+    created_at = models.DateField(blank=True, verbose_name="date of creation")
     finished_at = models.DateField(blank=True, null=True, verbose_name="date of finishing")
     name = models.CharField(max_length=50, null=False, blank=False, verbose_name='project name')
     description = models.TextField(null=True, blank=True, verbose_name='project description')

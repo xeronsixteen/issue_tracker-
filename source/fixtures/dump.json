@@ -28,9 +28,9 @@
   "pk": 6,
   "fields": {
     "created_at": "2022-07-26T12:39:01.801Z",
-    "updated_at": "2022-07-26T12:39:01.801Z",
-    "summary": "Testing",
-    "description": "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.333",
+    "updated_at": "2022-07-29T10:50:43.554Z",
+    "summary": "Testing2",
+    "description": "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.333fdsfadsf",
     "status": 2,
     "project": 1
   }
@@ -45,6 +45,18 @@
     "description": "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.4444",
     "status": 3,
     "project": 2
+  }
+},
+{
+  "model": "webapp.task",
+  "pk": 14,
+  "fields": {
+    "created_at": "2022-07-29T12:35:35.506Z",
+    "updated_at": "2022-07-29T12:35:35.506Z",
+    "summary": "saвфыв",
+    "description": "вфывыфв",
+    "status": 3,
+    "project": 1
   }
 },
 {
@@ -122,6 +134,14 @@
   }
 },
 {
+  "model": "webapp.tasktype",
+  "pk": 14,
+  "fields": {
+    "task": 14,
+    "type": 1
+  }
+},
+{
   "model": "webapp.project",
   "pk": 1,
   "fields": {
@@ -137,8 +157,8 @@
   "fields": {
     "created_at": "2022-07-26",
     "finished_at": "2022-07-31",
-    "name": "cascxadsc",
-    "description": "cadscadscads"
+    "name": "Project Two",
+    "description": "Project two desc"
   }
 }
 ]
