@@ -20,6 +20,7 @@
           <p>
             Project updated: {{ project.finished_at }}
         </p>
+        <a href="{% url 'update_project' project.pk %}">EDIT PROJECT</a>
       {% for task in tasks %}
           <div class="col-12 col-md-6 col-lg-6">
             <div class="card">
