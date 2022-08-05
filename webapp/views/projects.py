@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -6,7 +7,7 @@ from webapp.forms import ProjectForm
 from webapp.models import Project
 
 
-class ProjectView(ListView):
+class ProjectView(LoginRequiredMixin, ListView):
     template_name = 'projects/projects.html'
     context_object_name = 'projects'
 
@@ -14,7 +15,7 @@ class ProjectView(ListView):
         return Project.objects.all().order_by('-created_at')
 
 
-class OneProjectView(DetailView):
+class OneProjectView(LoginRequiredMixin, DetailView):
     template_name = "projects/one_project_view.html"
     model = Project
 
@@ -24,28 +25,28 @@ class OneProjectView(DetailView):
         return context
 
 
-class CreateProject(CreateView):
+class CreateProject(LoginRequiredMixin, CreateView):
     form_class = ProjectForm
     template_name = "projects/create.html"
 
     def get_success_url(self):
-        return reverse('project_view', kwargs={"pk": self.object.pk})
+        return reverse('webapp:project_view', kwargs={"pk": self.object.pk})
 
 
-class UpdateProject(UpdateView):
+class UpdateProject(LoginRequiredMixin, UpdateView):
     form_class = ProjectForm
     template_name = "projects/update.html"
     model = Project
 
     def get_success_url(self):
-        return reverse('project_list')
+        return reverse('webapp:project_list')
 
 
-class DeleteProject(DeleteView):
+class DeleteProject(LoginRequiredMixin, DeleteView):
     model = Project
 
     def get(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('project_list')
+        return reverse('webapp:project_list')
