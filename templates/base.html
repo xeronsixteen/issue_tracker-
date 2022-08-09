@@ -38,12 +38,16 @@
                     {% block menu_links %}{% endblock %}
                     <li class="menu-right"><a href="{% url 'accounts:logout' %}"
                                               class="nav-link">Logout</a></li>
-                    <li class="menu-right">Hello, {{ user.username }}!</li>
+                    <li class="menu-right">Hello, {{ user.username }}</li>
                 {% else %}
-                    <li class="menu-right"><a href="{% url 'accounts:login' %}"
+                    <li class="menu-right"><a href="{% url 'accounts:login' %}?next={{ request.get_full_path }}"
                                               class="nav-link">Login</a></li>
 
+
                 {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "accounts:registration" %}?next={{ request.get_full_path }}">Registration</a>
+                    </li>
             </ul>
         </div>
     </div>
