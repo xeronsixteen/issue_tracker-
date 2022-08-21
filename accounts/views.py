@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import CreateView
 
-from webapp.forms import MyUserCreationForm
+from accounts.forms import MyUserCreationForm
 
 
 class RegisterView(CreateView):
