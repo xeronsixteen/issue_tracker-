@@ -16,6 +16,9 @@
         <p>
             Task status: {{ task.status }}
         </p>
+      <p>
+            WHO DID IT: {{ task.user }}
+        </p>
         <p>
            {% for type in task.type.all %}
             <p>
