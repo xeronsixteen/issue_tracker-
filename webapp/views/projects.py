@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -25,12 +25,21 @@ class OneProjectView(LoginRequiredMixin, DetailView):
         return context
 
 
-class CreateProject(LoginRequiredMixin, CreateView):
+class CreateProject(PermissionRequiredMixin, CreateView):
     form_class = ProjectForm
     template_name = "projects/create.html"
 
     def get_success_url(self):
         return reverse('webapp:project_view', kwargs={"pk": self.object.pk})
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super().form_valid(form)
+
+    def has_permission(self):
+        return self.request.user.has_perm(
+            'webapp.add_project') or self.request.user == self.get_object().user
 
 
 class UpdateProject(LoginRequiredMixin, UpdateView):
@@ -41,6 +50,10 @@ class UpdateProject(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('webapp:project_list')
 
+    def has_permission(self):
+        return self.request.user.has_perm(
+            'webapp.change_project') or self.request.user == self.get_object().user
+
 
 class DeleteProject(LoginRequiredMixin, DeleteView):
     model = Project
@@ -50,3 +63,7 @@ class DeleteProject(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('webapp:project_list')
+
+    def has_permission(self):
+        return self.request.user.has_perm(
+            'webapp.delete_project') or self.request.user == self.get_object().user
