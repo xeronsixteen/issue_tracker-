@@ -4,8 +4,6 @@ from django.utils import timezone
 
 
 # Create your models here.
-
-
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="date of creation")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="date of update")
@@ -17,12 +15,12 @@ class BaseModel(models.Model):
 class Task(BaseModel):
     summary = models.CharField(max_length=100, verbose_name='summary')
     description = models.TextField(null=False, blank=True, verbose_name='description')
-    status = models.ForeignKey('webapp.Status', on_delete=models.PROTECT, related_name='tasks',
-                               verbose_name='status')
+    status = models.ForeignKey('webapp.Status', on_delete=models.PROTECT, related_name='tasks', verbose_name='status')
     type = models.ManyToManyField('webapp.Type', related_name='tasks', through='TaskType',
                                   through_fields=('task', 'type'), blank=False)
-    project = models.ForeignKey('webapp.Project', on_delete=models.CASCADE, related_name='tasks',
-                                verbose_name='tasks')
+    project = models.ForeignKey('webapp.Project', on_delete=models.CASCADE, related_name='tasks', verbose_name='tasks')
+    user = models.ForeignKey(get_user_model(), on_delete=models.SET_DEFAULT, default=1, verbose_name='User',
+                             related_name='tasks')
 
     def __str__(self):
         return f"{self.id}. {self.summary}: {self.description}"
@@ -58,15 +56,8 @@ class Type(models.Model):
 
 
 class TaskType(models.Model):
-    task = models.ForeignKey('webapp.Task',
-                             related_name='task_types',
-                             on_delete=models.CASCADE,
-                             verbose_name='tasks')
-
-    type = models.ForeignKey('webapp.Type',
-                             related_name='type_tasks',
-                             on_delete=models.CASCADE,
-                             verbose_name='Type')
+    task = models.ForeignKey('webapp.Task', related_name='task_types', on_delete=models.CASCADE, verbose_name='tasks')
+    type = models.ForeignKey('webapp.Type', related_name='type_tasks', on_delete=models.CASCADE, verbose_name='Type')
 
 
 class Project(models.Model):
@@ -74,4 +65,6 @@ class Project(models.Model):
     finished_at = models.DateField(blank=True, null=True, verbose_name="date of finishing")
     name = models.CharField(max_length=50, null=False, blank=False, verbose_name='project name')
     description = models.TextField(null=True, blank=True, verbose_name='project description')
-    user = models.ManyToManyField(get_user_model(), verbose_name='User', related_name='projects')
+    user = models.ForeignKey(get_user_model(), on_delete=models.SET_DEFAULT, default=1, verbose_name='User',
+                             related_name='projects')
+
