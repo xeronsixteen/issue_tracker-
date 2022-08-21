@@ -1,13 +1,14 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.forms import EmailField
+from django.forms import EmailField, forms
 
 
 class MyUserCreationForm(UserCreationForm):
     email = EmailField(required=True)
 
     class Meta(UserCreationForm.Meta):
+        model = User
         fields = ['username', 'password1', 'password2',
                   'first_name', 'last_name', 'email']
 

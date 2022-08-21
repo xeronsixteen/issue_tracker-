@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
@@ -73,3 +74,4 @@ class Project(models.Model):
     finished_at = models.DateField(blank=True, null=True, verbose_name="date of finishing")
     name = models.CharField(max_length=50, null=False, blank=False, verbose_name='project name')
     description = models.TextField(null=True, blank=True, verbose_name='project description')
+    user = models.ManyToManyField(get_user_model(), verbose_name='User', related_name='projects')
