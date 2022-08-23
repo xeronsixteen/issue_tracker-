@@ -1,10 +1,9 @@
 {%  extends 'base.html' %}
 {% block content %}
-
-    <p>Вы уверены, что хотите удалить {{ project.name }}</p>
+    <p>Do you want to delete {{ project.name }}?</p>
     <form action="" method="POST">
     {%  csrf_token %}
-        <input name="Yes" type="submit" value="Да"/>
-        <input name="No" type="submit" value="Нет"/>
+        <input name="Yes" type="submit" value="Yes"/>
+        <input name="No" type="submit" value="No"/>
     </form>
 {%  endblock %}

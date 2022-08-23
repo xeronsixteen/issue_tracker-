@@ -10,10 +10,10 @@
 {% endblock %}
 {% block content %}
     <div class="row">
-    <p class="card-text"><b>Title:</b> {{ project.name }}</p>
-    <p class="card-text"><b>Description:</b> {{ project.name }}</p>
-    <p class="card-text"><b>Started:</b> {{ project.created_at }}</p>
-    <p class="card-text"><b>Deadline:</b> {{ project.finished_at }}</p>
+        <p class="card-text"><b>Title:</b> {{ project.name }}</p>
+        <p class="card-text"><b>Description:</b> {{ project.description }}</p>
+        <p class="card-text"><b>Started:</b> {{ project.created_at }}</p>
+        <p class="card-text"><b>Deadline:</b> {{ project.finished_at }}</p>
         {% if perms.webapp.change_project or user == project.user %}
             <a href="{% url 'webapp:update_project' project.pk %}"
                class="nav-link">Update project</a>
@@ -79,7 +79,7 @@
                             </a>
                         {% endif %}
                         {% if perms.webapp.change_project and user in project.user.all %}
-                            <a href="{% url 'webapp:AddUserInProject' project.pk %}">Add colleagues </a>
+                            <a href="{% url 'webapp:AddUserInProject' project.pk %}">Add contributors</a>
                         {% endif %}
                     </div>
                 </div>
