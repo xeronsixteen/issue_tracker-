@@ -66,3 +66,8 @@ class Project(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+    class Meta:
+        permissions = [
+            ('only_for_lead_and_manager', 'только для капитана или менеджера')
+        ]
