@@ -82,12 +82,21 @@ class SearchForm(forms.Form):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = '__all__'
+        exclude = ['user']
         widgets = {
             'created_at': widgets.SelectDateWidget,
             'finished_at': widgets.SelectDateWidget,
         }
 
 
+class ProjectFormUser(forms.ModelForm):
+    class Meta:
+        model = Project
+        exclude = ['user']
 
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['user']
+        widgets = {'user': widgets.CheckboxSelectMultiple}
