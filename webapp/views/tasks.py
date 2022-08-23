@@ -79,57 +79,72 @@ class TaskCreateInProjectView(LoginRequiredMixin, CreateView):
         return redirect('webapp:project_view', pk=project.pk)
 
 
-class TaskCreateView(LoginRequiredMixin, View):
-    @staticmethod
-    def get(request, *args, **kwargs):
-        form = TaskForm
-        return render(request, "tasks/create.html", {'form': form})
-
-    @staticmethod
-    def post(request, *args, **kwargs):
-        form = TaskForm(data=request.POST)
-        if form.is_valid():
-            summary = form.cleaned_data.get('summary')
-            description = form.cleaned_data.get('description')
-            status = form.cleaned_data.get('status')
-            type = form.cleaned_data.get('type')
-            project = form.cleaned_data.get('project')
-            new_task = Task.objects.create(summary=summary, description=description, status=status, project=project)
-            new_task.type.set(type)
-            return redirect('webapp:project_list')
-        return render(request, 'tasks/create.html', {'form': form})
-
-    def form_valid(self, form):
-        user = self.request.user
-        form.instance.author = user
-        return super().form_valid(form)
+class TaskCreateView(LoginRequiredMixin,CreateView):
+    template_name = 'tasks/create.html'
+    form_class = TaskForm
 
     def get_success_url(self):
         return reverse('webapp:task_view', kwargs={'pk': self.object.pk})
+
+    def has_permission(self):
+        return self.request.user.has_perm(
+            'webapp.add_task') and self.request.user in self.get_object().project.user.all()
+
+# class TaskCreateView(LoginRequiredMixin, View):
+#     @staticmethod
+#     def get(request, *args, **kwargs):
+#         form = TaskForm
+#         return render(request, "tasks/create.html", {'form': form})
+#
+#     @staticmethod
+#     def post(request, *args, **kwargs):
+#         form = TaskForm(data=request.POST)
+#         if form.is_valid():
+#             summary = form.cleaned_data.get('summary')
+#             description = form.cleaned_data.get('description')
+#             status = form.cleaned_data.get('status')
+#             type = form.cleaned_data.get('type')
+#             project = form.cleaned_data.get('project')
+#             new_task = Task.objects.create(summary=summary, description=description, status=status, project=project)
+#             new_task.type.set(type)
+#             return redirect('webapp:project_list')
+#         return render(request, 'tasks/create.html', {'form': form})
+#
+#     def form_valid(self, form):
+#         user = self.request.user
+#         form.instance.author = user
+#         return super().form_valid(form)
+#
+#     def get_success_url(self):
+#         return reverse('webapp:task_view', kwargs={'pk': self.object.pk})
 
     # def has_permission(self):
     #     return self.request.user.has_perm(
     #         'webapp.add_task') or self.request.user == self.object().user
 
 
-class TaskUpdateView(LoginRequiredMixin, UpdateView):
+class TaskUpdateView(PermissionRequiredMixin, UpdateView):
     form_class = TaskForm
     template_name = 'tasks/update.html'
     model = Task
+    context_object_name = 'task'
+    permission_required = 'webapp.change_task'
 
     def get_success_url(self):
         return reverse('webapp:task_view', kwargs={'pk': self.object.pk})
 
     def has_permission(self):
         return self.request.user.has_perm(
-            'webapp.change_task') or self.request.user == self.get_object().user
+            'webapp.change_task') and self.request.user in self.get_object().project.user.all()
 
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(PermissionRequiredMixin, DeleteView):
     model = Task
     template_name = 'tasks/delete.html'
     success_url = reverse_lazy('webapp:task_list')
+    context_object_name = 'task'
+    permission_required = 'webapp.delete_task'
 
     def has_permission(self):
         return self.request.user.has_perm(
-            'webapp.delete_task') or self.request.user == self.get_object().user
+            'webapp.delete_task') and self.request.user in self.get_object().project.user.all()
