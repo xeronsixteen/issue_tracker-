@@ -17,10 +17,7 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        # print(self.request.POST.get('username'))
         Profile.objects.create(user=user)
-        # prof = Profile.objects.create(user=user)
-        # print(Profile.objects.create(user=user))
         login(self.request, user)
         return redirect(self.get_success_url())
 
@@ -40,12 +37,6 @@ class UsersView(ListView):
     context_object_name = 'users'
 
 
-# class UserDetailView(LoginRequiredMixin, DetailView):
-#     template_name = 'registration/user.html'
-#     model = get_user_model()
-#     context_object_name = 'user'
-
-
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = get_user_model()
     template_name = 'registration/user.html'
@@ -54,11 +45,12 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     paginate_related_orphans = 0
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         projects = self.object.projects.order_by('-created_at')
         paginator = Paginator(projects, self.paginate_related_by, orphans=self.paginate_related_orphans)
         page_number = self.request.GET.get('page', 1)
         page = paginator.get_page(page_number)
-        kwargs['page_obj'] = page
-        kwargs['projects'] = page.object_list
-        kwargs['is_paginated'] = page.has_other_pages()
-        return super().get_context_data(**kwargs)
+        context['page_obj'] = page
+        context['projects'] = page.object_list
+        context['is_paginated'] = page.has_other_pages()
+        return context
