@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+
+{% block title %}Profile{% endblock %}
+{% block content %}
+    <div class='card flex-row mt-3'>
+        {% if user.profile.avatar %}
+            <img src="{{ user.profile.avatar.url }}"
+                 class="card-img-top w-25"
+                 alt="...">
+        {% endif %}
+        <div class='cart-body text-left ms-3'>
+            <p>Username: {{ user.username }}</p>
+            <p>Name: {{ user.first_name }}</p>
+            <p>Surname: {{ user.last_name }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Git: {{ user.git }}</p>
+            <p>Bio: {{ user.bio }}</p>
+            <h4 class="text-center clear">User's projects</h4>
+            {% for project in request.user.projects.all %}
+                <a href="{% url 'webapp:project_view' project.pk %}">{{ project }}</a>
+            {% endfor %}
+        </div>
+
+
+    </div>
+{% endblock %}

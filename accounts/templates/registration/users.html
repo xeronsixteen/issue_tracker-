@@ -4,7 +4,7 @@
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">Название:
-                    <a href="{% url 'accounts:UsersView' user.id %} ">{{ user }}</a></h5>
+                    <a href="{% url 'accounts:UsersView' request.user.pk %} "></a></h5>
             </div>
         </div>
     {% endfor %}
