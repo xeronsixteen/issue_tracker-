@@ -2,17 +2,13 @@
 {% load static %}
 
 {% block nav %}
-    {% if perms.webapp.add_project or user == projects.user %}
-    <li>
-    <a href="{% url 'webapp:create_project'%}" title="Create project"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
-</svg></a>
+    {% if perms.webapp.add_project %}
+    <li class="menu-right">
+    <a href="{% url 'webapp:create_project'%}" class="nav-link">New project</a>
     </li>
     {% endif %}
-    <li>
-        <a href="{% url 'webapp:task_list' %}" title="All tasks "><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
-</svg></a>
+    <li class="menu-right">
+        <a href="{% url 'webapp:task_list' %}" class="nav-link">All tasks</a>
     </li>
 {% endblock %}
 {% block content %}
@@ -25,7 +21,9 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ project.name }}</h5>
                     <p class="card-text">{{ project.description }}</p>
-                    <p class="card-text">{{ project.user }}</p>
+                    {% for user in project.user.all %}
+                    <p class="card-text"><b>Contributors:</b> {{ user.username }}</p>
+                        {% endfor %}
                     <a href="{% url 'webapp:project_view' project.pk %}" title="Detail View"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
   <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path>
 </svg></a>

@@ -1,11 +1,23 @@
-{% extends 'base.html' %}
-{% block title %} Delete task {% endblock %}
+{#{% extends 'base.html' %}#}
+{#{% block title %} Delete task {% endblock %}#}
+{##}
+{#{% block content %}#}
+{#<form action="" method="post">#}
+{#{% csrf_token %}#}
+{#    <h2>Are you sure that you want to delete {{ task.summary }}?</h2>#}
+{#    <button type="submit">Yes</button>#}
+{#</form>#}
+{#    <a href="{% url 'webapp:task_list' %}">No</a>#}
+{#{% endblock %}#}
 
+
+{%  extends 'base.html' %}
 {% block content %}
-<form action="" method="post">
-{% csrf_token %}
-    <h2>Are you sure that you want to delete {{ task.summary }}?</h2>
-    <button type="submit">Yes</button>
-</form>
-    <a href="{% url 'webapp:task_list' %}">No</a>
-{% endblock %}
+
+    <p>Вы уверены, что хотите удалить {{ task.summary }}</p>
+    <form action="" method="POST">
+    {%  csrf_token %}
+        <input name="Yes" type="submit" value="Да"/>
+        <input name="No" type="submit" value="Нет"/>
+    </form>
+{%  endblock %}
