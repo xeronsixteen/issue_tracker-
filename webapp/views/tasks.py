@@ -2,10 +2,9 @@ from urllib import request
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
-from django.views import View
 from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView
 
 from webapp.forms import TaskForm, SearchForm, TaskForm2
@@ -79,7 +78,7 @@ class TaskCreateInProjectView(LoginRequiredMixin, CreateView):
         return redirect('webapp:project_view', pk=project.pk)
 
 
-class TaskCreateView(LoginRequiredMixin,CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     template_name = 'tasks/create.html'
     form_class = TaskForm
 
@@ -89,38 +88,6 @@ class TaskCreateView(LoginRequiredMixin,CreateView):
     def has_permission(self):
         return self.request.user.has_perm(
             'webapp.add_task') and self.request.user in self.get_object().project.user.all()
-
-# class TaskCreateView(LoginRequiredMixin, View):
-#     @staticmethod
-#     def get(request, *args, **kwargs):
-#         form = TaskForm
-#         return render(request, "tasks/create.html", {'form': form})
-#
-#     @staticmethod
-#     def post(request, *args, **kwargs):
-#         form = TaskForm(data=request.POST)
-#         if form.is_valid():
-#             summary = form.cleaned_data.get('summary')
-#             description = form.cleaned_data.get('description')
-#             status = form.cleaned_data.get('status')
-#             type = form.cleaned_data.get('type')
-#             project = form.cleaned_data.get('project')
-#             new_task = Task.objects.create(summary=summary, description=description, status=status, project=project)
-#             new_task.type.set(type)
-#             return redirect('webapp:project_list')
-#         return render(request, 'tasks/create.html', {'form': form})
-#
-#     def form_valid(self, form):
-#         user = self.request.user
-#         form.instance.author = user
-#         return super().form_valid(form)
-#
-#     def get_success_url(self):
-#         return reverse('webapp:task_view', kwargs={'pk': self.object.pk})
-
-    # def has_permission(self):
-    #     return self.request.user.has_perm(
-    #         'webapp.add_task') or self.request.user == self.object().user
 
 
 class TaskUpdateView(PermissionRequiredMixin, UpdateView):
