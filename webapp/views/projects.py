@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -52,8 +52,6 @@ class AddUserInProject(PermissionRequiredMixin, UpdateView):
     permission_required = 'webapp.change_project'
 
     def form_valid(self, form):
-        # pk = self.kwargs.get('pk')
-        # project= get_object_or_404(Project,pk = pk)
         project = form.save()
         user_id = self.request.POST.get('user')
         author = self.request.user.pk
@@ -84,12 +82,3 @@ class DeleteProject(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('webapp:project_list')
     permission_required = 'webapp.delete_project'
 
-    # def get(self, request, *args, **kwargs):
-    #     return super().delete(request, *args, **kwargs)
-    #
-    # def get_success_url(self):
-    #     return reverse('webapp:project_list')
-    #
-    # def has_permission(self):
-    #     return self.request.user.has_perm(
-    #         'webapp.delete_project') or self.request.user == self.get_object().user
