@@ -11,9 +11,9 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="{% static "css/style.css" %}">
-    <title>{% block title %}MAIN PAGE{% endblock %}</title>
+    {#    <link rel="stylesheet"#}
+    {#          href="{% static "css/style.css" %}">#}
+    <title>{% block title %}MAIN PAGE{% endblock %}class="nav-link"</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,18 +36,23 @@
                 {% endblock %}
                 {% if user.is_authenticated %}
                     {% block menu_links %}{% endblock %}
+                    <li class="menu-right"><a href="{% url 'accounts:UsersView' %}"
+                                              class="nav-link">Users</a></li>
                     <li class="menu-right"><a href="{% url 'accounts:logout' %}"
                                               class="nav-link">Logout</a></li>
-                    <li class="menu-right">Hello, {{ user.username }}</li>
+                    <li class="menu-right"><a href="#"
+                                              class="nav-link">Hello, {{ user.username }}</a></li>
+                    {#                    <li class="menu-right">Hello, {{ user.username }}</li>#}
                 {% else %}
                     <li class="menu-right"><a href="{% url 'accounts:login' %}?next={{ request.get_full_path }}"
                                               class="nav-link">Login</a></li>
 
 
                 {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url "accounts:registration" %}?next={{ request.get_full_path }}">Registration</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url "accounts:registration" %}?next={{ request.get_full_path }}">Registration</a>
+                </li>
             </ul>
         </div>
     </div>
