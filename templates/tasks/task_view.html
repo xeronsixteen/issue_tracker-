@@ -1,31 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-        <!--suppress ALL -->
-
-    <p>
-            Task title: {{ task.summary }}
-        </p>
-        <p>
-            Task status: {{ task.description }}
-        </p>
-        <p>
-            Task created: {{ task.created_at }}
-        </p>
-          <p>
-            Task updated: {{ task.updated_at }}
-        </p>
-        <p>
-            Task status: {{ task.status }}
-        </p>
-      <p>
-            WHO DID IT: {{ task.user }}
-        </p>
-        <p>
-           {% for type in task.type.all %}
-            <p>
-             Task type: {{ type.name }}
-            </p>
-        {% endfor %}
-        </p>
-<a href="/">To main page</a>
+    <p>Task title: {{ task.summary }}</p>
+    <p>Task status: {{ task.description }}</p>
+    <p>Task created: {{ task.created_at }}</p>
+    <p>Task updated: {{ task.updated_at }}</p>
+    <p>Task status: {{ task.status }}</p>
+    <p>Task owner: {{ task.user }}</p>
+    {% for type in task.type.all %}
+        <p>Task type: {{ type.name }}</p>
+    {% endfor %}
+    <a href="/">To main page</a>
 {% endblock %}

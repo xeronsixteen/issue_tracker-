@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <h1 >Update post</h1>
 <form action="" method="post">
     {% include "partial/form.html" with button_text="Update" %}
 </form>
 <br/>
 <a href="{% url 'webapp:task_list' %}">Main page</a>
-
 {% endblock %}

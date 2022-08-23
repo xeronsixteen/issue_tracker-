@@ -1,18 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
-
-
 {% block nav %}
     {% if perms.webapp.add_task or user == task.user %}
-    <li class="menu-right">
+    <li class="menu-right mt-2">
             <a href="{% url 'webapp:create' %}" class="nav-link">New task</a>
         </li>
     {% endif %}
-
     {% include 'partial/search.html' %}
 {% endblock %}
 {% block content %}
-
     <h1 style="text-align: center">To Do App</h1>
     <div class="row">
       {% for task in tasks %}
