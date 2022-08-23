@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils import timezone
 
 
 # Create your models here.
@@ -19,8 +18,6 @@ class Task(BaseModel):
     type = models.ManyToManyField('webapp.Type', related_name='tasks', through='TaskType',
                                   through_fields=('task', 'type'), blank=False)
     project = models.ForeignKey('webapp.Project', on_delete=models.CASCADE, related_name='tasks', verbose_name='tasks')
-    user = models.ForeignKey(get_user_model(), on_delete=models.SET_DEFAULT, default=1, verbose_name='User',
-                             related_name='tasks')
 
     def __str__(self):
         return f"{self.id}. {self.summary}: {self.description}"
@@ -65,6 +62,7 @@ class Project(models.Model):
     finished_at = models.DateField(blank=True, null=True, verbose_name="date of finishing")
     name = models.CharField(max_length=50, null=False, blank=False, verbose_name='project name')
     description = models.TextField(null=True, blank=True, verbose_name='project description')
-    user = models.ForeignKey(get_user_model(), on_delete=models.SET_DEFAULT, default=1, verbose_name='User',
-                             related_name='projects')
+    user = models.ManyToManyField(get_user_model(), verbose_name='User', related_name='projects')
 
+    def __str__(self):
+        return f"{self.name}"
