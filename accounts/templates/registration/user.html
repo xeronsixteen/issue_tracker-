@@ -1,15 +1,14 @@
 {% extends "base.html" %}
-
-
-
 {% block nav %}
- <li class="nav-item mt-2">
-        <a class='nav-link' href="{% url 'accounts:change_profile' user_obj.pk %}">Change profile</a>
+    {% if user_obj == user %}
+
+    <li class="nav-item mt-2">
+        <a class='nav-link'
+           href="{% url 'accounts:change_profile' %}">Change profile</a>
     </li>
+    {% endif %}
 {% endblock %}
-
 {% block content %}
-
     <div class='card flex-row mt-3'>
         {% if user_obj.profile.avatar %}
             <img src="{{ user_obj.profile.avatar.url }}"
@@ -28,7 +27,5 @@
                 <a href="{% url 'webapp:project_view' project.pk %}">{{ project }}</a>
             {% endfor %}
         </div>
-
-
     </div>
 {% endblock %}
