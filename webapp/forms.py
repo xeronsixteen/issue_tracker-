@@ -74,7 +74,7 @@ class TaskForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    search = forms.CharField(max_length=50, required=False, label='Find')
+    search = forms.CharField(max_length=50, required=False)
 
 
 class ProjectForm(forms.ModelForm):

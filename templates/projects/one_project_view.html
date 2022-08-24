@@ -3,7 +3,7 @@
     {% if perms.webapp.add_project or user == project.user %}
         <li class="menu-right">
             <a href="{% url 'webapp:create' %}"
-               class="nav-link">New task</a>
+               class="nav-link mt-2">New task</a>
         </li>
     {% endif %}
     <li>
