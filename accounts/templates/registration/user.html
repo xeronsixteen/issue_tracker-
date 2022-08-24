@@ -2,10 +2,14 @@
 {% block nav %}
     {% if user_obj == user %}
 
-    <li class="nav-item mt-2">
-        <a class='nav-link'
-           href="{% url 'accounts:change_profile' %}">Change profile</a>
-    </li>
+        <li class="nav-item mt-2">
+            <a class='nav-link'
+               href="{% url 'accounts:change_profile' %}">Change profile</a>
+        </li>
+        <li class="nav-item mt-2">
+            <a class='nav-link'
+               href="{% url 'accounts:change_password' %}">Change password</a>
+        </li>
     {% endif %}
 {% endblock %}
 {% block content %}
