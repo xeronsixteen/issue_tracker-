@@ -1,13 +1,15 @@
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
+
 from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
-from accounts.forms import MyUserCreationForm
+from accounts.forms import MyUserCreationForm, UserChangeForm, ProfileChangeForm
 from accounts.models import Profile
+
+User = get_user_model()
 
 
 class RegisterView(CreateView):
@@ -33,12 +35,12 @@ class RegisterView(CreateView):
 
 class UsersView(ListView):
     template_name = 'registration/users.html'
-    model = get_user_model()
+    model = User
     context_object_name = 'users'
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
-    model = get_user_model()
+    model = User
     template_name = 'registration/user.html'
     context_object_name = 'user_obj'
     paginate_related_by = 5
@@ -54,3 +56,11 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['projects'] = page.object_list
         context['is_paginated'] = page.has_other_pages()
         return context
+
+
+class ChangeProfileView(UpdateView):
+    model = User
+    form_class = UserChangeForm
+    template_name = 'change_user.html'
+    profile_form_class = ProfileChangeForm
+
